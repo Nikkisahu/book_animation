@@ -1,0 +1,4 @@
+enum AnimatedBookStatus {
+  dismissed,
+  completed,
+}

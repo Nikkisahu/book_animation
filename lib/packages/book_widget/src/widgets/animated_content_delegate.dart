@@ -1,4 +1,4 @@
-import 'package:animated_book_widget/src/src.dart';
+import 'package:book_animation/packages/book_widget/animated_book_widget.dart';
 import 'package:flutter/material.dart';
 
 /// An abstract class representing the delegate for animated content

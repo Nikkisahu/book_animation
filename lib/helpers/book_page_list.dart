@@ -28,5 +28,5 @@
 List<String> books = [
   'https://content.wepik.com/statics/90897927/preview-page0.jpg',
   'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg',
-  'https://i.pinimg.com/originals/a1/f8/87/a1f88733921c820db477d054fe96afbb.jpg',
+  'https://content.wepik.com/statics/90897927/preview-page0.jpg',
 ];

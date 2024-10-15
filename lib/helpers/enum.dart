@@ -1,4 +1,4 @@
-enum AnimatedBookStatus {
-  dismissed,
-  completed,
-}
+// enum AnimatedBookStatus {
+//   dismissed,
+//   completed,
+// }

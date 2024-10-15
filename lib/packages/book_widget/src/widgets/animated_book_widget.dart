@@ -1,4 +1,5 @@
-import 'package:animated_book_widget/src/src.dart';
+import 'package:book_animation/packages/book_widget/animated_book_widget.dart';
+import 'package:book_animation/packages/book_widget/src/widgets/background_blur.dart';
 import 'package:flutter/material.dart';
 
 /// A customizable animated book widget with
@@ -38,7 +39,6 @@ class AnimatedBookWidget extends StatefulWidget {
   AnimatedBookWidget({
     required this.cover,
     required this.size,
-    required Widget content,
     super.key,
     this.padding = EdgeInsets.zero,
     this.blurRadius = 4,
@@ -51,7 +51,7 @@ class AnimatedBookWidget extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 500),
     this.reverseAnimationDuration = const Duration(milliseconds: 500),
     this.backgroundBorderRadius = BorderRadius.zero,
-  }) : contentDelegate = DefaultAnimatedContentDelegate(contentChild: content);
+  });
 
   /// Creates an [AnimatedBookWidget] with dynamic content
   /// using a builder function.
@@ -90,8 +90,7 @@ class AnimatedBookWidget extends StatefulWidget {
   AnimatedBookWidget.builder({
     required this.cover,
     required this.size,
-    required AnimatedBookContentBuilder contentBuilder,
-    Widget? contentChild,
+    // required AnimatedBookContentBuilder contentBuilder,
     super.key,
     this.padding = EdgeInsets.zero,
     this.blurRadius = 4,
@@ -104,16 +103,12 @@ class AnimatedBookWidget extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 500),
     this.reverseAnimationDuration = const Duration(milliseconds: 500),
     this.backgroundBorderRadius = BorderRadius.zero,
-  }) : contentDelegate = BuilderAnimatedContentDelegate(
-          contentBuilder: contentBuilder,
-          contentChild: contentChild,
-        );
+  });
 
   /// The widget representing the book cover.
   final Widget cover;
 
   /// The delegate responsible for building the animated content.
-  final AnimatedContentDelegate contentDelegate;
 
   /// The size of the book.
   final Size size;
@@ -167,7 +162,7 @@ class _AnimatedBookWidgetState extends State<AnimatedBookWidget>
   AnimatedBookStatus bookStatus = AnimatedBookStatus.dismissed;
   late Size size = widget.size;
   late Widget cover = widget.cover;
-  late AnimatedContentDelegate contentDelegate = widget.contentDelegate;
+  // late AnimatedContentDelegate contentDelegate = widget.contentDelegate;
   late EdgeInsets padding = widget.padding;
   late Color backgroundColor =
       widget.backgroundColor ?? context.theme.scaffoldBackgroundColor;
@@ -213,9 +208,9 @@ class _AnimatedBookWidgetState extends State<AnimatedBookWidget>
   void didUpdateWidget(AnimatedBookWidget oldWidget) {
     size = widget.size != size ? widget.size : size;
     cover = widget.cover != cover ? widget.cover : cover;
-    contentDelegate = widget.contentDelegate != contentDelegate
-        ? widget.contentDelegate
-        : contentDelegate;
+    // contentDelegate = widget.contentDelegate != contentDelegate
+    //     ? widget.contentDelegate
+    //     : contentDelegate;
     padding = widget.padding != padding ? widget.padding : padding;
     backgroundColor = widget.backgroundColor != backgroundColor
         ? widget.backgroundColor ?? backgroundColor
@@ -269,10 +264,10 @@ class _AnimatedBookWidgetState extends State<AnimatedBookWidget>
                 offset: backgroundBlurOffset,
                 borderRadius: backgroundBorderRadius,
               ),
-              AnimatedContentWidget(
-                bookAnimation: animation,
-                delegate: contentDelegate,
-              ),
+              // AnimatedContentWidget(
+              //   bookAnimation: animation,
+              //   delegate: contentDelegate,
+              // ),
               AnimatedCoverWidget(
                 listenable: animation,
                 cover: cover,

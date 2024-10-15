@@ -1,5 +1,6 @@
-import 'package:animated_book_widget/animated_book_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../packages/book_widget/src/enums/animated_book_status.dart';
 
 class BookPageItem {
   AnimationController? animationController;

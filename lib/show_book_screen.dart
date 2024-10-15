@@ -1,4 +1,4 @@
-import 'package:animated_book_widget/animated_book_widget.dart';
+import 'package:book_animation/packages/book_widget/animated_book_widget.dart';
 import 'package:book_animation/infrastructure/models/book_page_item.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class _MagazineExampleState extends State<MagazineExample>
   List<String> urls = [
     'https://content.wepik.com/statics/90897927/preview-page0.jpg',
     'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg',
-    'https://i.pinimg.com/originals/a1/f8/87/a1f88733921c820db477d054fe96afbb.jpg',
+    'https://content.wepik.com/statics/90897927/preview-page0.jpg',
   ];
   bool _isFirstTap = true;
   @override
@@ -32,6 +32,8 @@ class _MagazineExampleState extends State<MagazineExample>
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.grey,
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(
               height: 250,
@@ -70,7 +72,8 @@ class _MagazineExampleState extends State<MagazineExample>
               ? MediaQuery.of(context).size.width * 0.25
               : MediaQuery.of(context).size.width * 0.025,
           child: AnimatedBookWidget(
-            totalPages: 5,
+            totalPages: pages.length,
+
             size: Size.fromWidth(MediaQuery.of(context).size.width),
             // padding: widget.horizontalView
             //     ? const EdgeInsets.symmetric(horizontal: 5)
@@ -79,15 +82,7 @@ class _MagazineExampleState extends State<MagazineExample>
               borderRadius: const BorderRadius.horizontal(
                   right: Radius.circular(10), left: Radius.circular(10)),
               child: Image.network(
-                urls[1],
-                fit: BoxFit.cover,
-              ),
-            ),
-            content: ClipRRect(
-              borderRadius: const BorderRadius.horizontal(
-                  right: Radius.circular(10), left: Radius.circular(10)),
-              child: Image.network(
-                urls[2],
+                pages[index].url ?? "",
                 fit: BoxFit.cover,
               ),
             ),
@@ -109,6 +104,7 @@ class _MagazineExampleState extends State<MagazineExample>
       allPages.add(item);
     }
     allPages = allPages.reversed.toList();
-    currentPages = allPages.reversed.toList();
+    // currentPages = allPages.reversed.toList();
+    currentPages = allPages.toList();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:book_animation/home_screen.dart';
+import 'package:book_animation/show_book_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,9 +16,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        useMaterial3: false,
       ),
-      home: const MyHomePage(),
+      home: const MagazineExample(),
     );
   }
 }

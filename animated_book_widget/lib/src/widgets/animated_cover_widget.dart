@@ -27,7 +27,7 @@ class AnimatedCoverWidget extends AnimatedWidget {
         alignment: Alignment.centerLeft,
         transform: Matrix4.identity()
           ..setEntry(3, 2, 0.001)
-          ..rotateY(1.65 * coverAnimation.value),
+          ..rotateY(2.65 * coverAnimation.value),
         child: cover,
       ),
     );

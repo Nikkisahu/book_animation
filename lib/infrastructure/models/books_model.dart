@@ -1,3 +1,6 @@
+import 'package:book_animation/helpers/enum.dart';
+import 'package:flutter/material.dart';
+
 class BookPage {
   BookPage({
     required this.pageImgUrl,

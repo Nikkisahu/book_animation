@@ -46,6 +46,7 @@ class AnimatedBookWidget extends StatefulWidget {
     this.backgroundBlurOffset = Offset.zero,
     this.backgroundColor,
     this.backgroundShadowColor,
+    required this.totalPages,
     this.curve = Curves.linear,
     this.animationDuration = const Duration(milliseconds: 500),
     this.reverseAnimationDuration = const Duration(milliseconds: 500),
@@ -98,6 +99,7 @@ class AnimatedBookWidget extends StatefulWidget {
     this.backgroundBlurOffset = Offset.zero,
     this.backgroundColor,
     this.backgroundShadowColor,
+    required this.totalPages,
     this.curve = Curves.linear,
     this.animationDuration = const Duration(milliseconds: 500),
     this.reverseAnimationDuration = const Duration(milliseconds: 500),
@@ -146,6 +148,7 @@ class AnimatedBookWidget extends StatefulWidget {
   /// The border radius applied to the background.
   final BorderRadius backgroundBorderRadius;
 
+  final int totalPages;
   @override
   State<AnimatedBookWidget> createState() => _AnimatedBookWidgetState();
 }

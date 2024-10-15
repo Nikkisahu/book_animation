@@ -64,7 +64,7 @@ class BuilderAnimatedContentDelegate extends AnimatedContentDelegate {
   /// The [contentChild] is the widget representing the content.
   const BuilderAnimatedContentDelegate({
     required this.contentBuilder,
-    required this.contentChild,
+    this.contentChild,
   });
 
   /// A function that builds the animated content.

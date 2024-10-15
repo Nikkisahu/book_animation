@@ -4,10 +4,9 @@ packages:
   animated_book_widget:
     dependency: "direct main"
     description:
-      name: animated_book_widget
-      sha256: "15d0d0ad17a9ba0d14c36b471b45801c422e8d1b9cf0c1424773292caf5c762f"
-      url: "https://pub.dev"
-    source: hosted
+      path: animated_book_custom_widget
+      relative: true
+    source: path
     version: "1.0.1"
   async:
     dependency: transitive

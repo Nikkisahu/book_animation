@@ -28,6 +28,7 @@ class _MagazineExampleState extends State<MagazineExample> {
       _pageController; // Page controller for navigating through pages
 
   Size get heightSize => const Size.fromHeight(225);
+
   Size get widthSize => const Size.fromWidth(160);
 
   @override

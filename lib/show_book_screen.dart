@@ -29,30 +29,33 @@ class _MagazineExampleState extends State<MagazineExample>
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.grey,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 250,
-            ),
-            Expanded(
-                flex: 5,
-                child: Container(
-                  child: buildRecursive(),
-                )),
-            const SizedBox(
-              height: 250,
-            ),
-          ],
-        ),
-      );
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(
+            height: 250,
+          ),
+          Expanded(
+              flex: 5,
+              child: Container(
+                child: buildRecursive(),
+              )),
+          const SizedBox(
+            height: 250,
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget buildRecursive() => Stack(
         fit: StackFit.loose,
         clipBehavior: Clip.none,
+        alignment: Alignment.center,
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,

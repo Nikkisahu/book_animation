@@ -1,5 +1,6 @@
-import 'package:book_animation/packages/book_widget/animated_book_widget.dart';
 import 'package:book_animation/infrastructure/models/book_page_item.dart';
+import 'package:book_animation/packages/book_widget/animated_book_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MagazineExample extends StatefulWidget {
@@ -15,13 +16,13 @@ class _MagazineExampleState extends State<MagazineExample>
     with TickerProviderStateMixin {
   List<BookPageItem> allPages = [];
   List<BookPageItem> currentPages = [];
-  // List of magazine pages (URLs)
   List<String> urls = [
     'https://content.wepik.com/statics/90897927/preview-page0.jpg',
     'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg',
     'https://content.wepik.com/statics/90897927/preview-page0.jpg',
   ];
   bool _isFirstTap = true;
+
   @override
   void initState() {
     initializePages();
@@ -33,11 +34,12 @@ class _MagazineExampleState extends State<MagazineExample>
     return Scaffold(
       backgroundColor: Colors.grey,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(
             height: 250,
+            width: 15,
           ),
           Expanded(
               flex: 5,
@@ -55,7 +57,7 @@ class _MagazineExampleState extends State<MagazineExample>
   Widget buildRecursive() => Stack(
         fit: StackFit.loose,
         clipBehavior: Clip.none,
-        alignment: Alignment.center,
+        alignment: Alignment.centerRight,
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -63,33 +65,78 @@ class _MagazineExampleState extends State<MagazineExample>
           ...buildPagesList(currentPages.toList()),
         ],
       );
+
   List<Widget> buildPagesList(List<BookPageItem> pages) => List.generate(
         pages.length,
-        (index) => AnimatedPositioned(
-          duration: const Duration(milliseconds: 500),
-          top: 0,
-          bottom: 0,
-          // left: -(MediaQuery.of(context).size.width * 0.25),
-          left: _isFirstTap ? -(MediaQuery.of(context).size.width * 0.25) : 0,
-          right: _isFirstTap
-              ? MediaQuery.of(context).size.width * 0.25
-              : MediaQuery.of(context).size.width * 0.025,
-          child: AnimatedBookWidget(
-            totalPages: pages.length,
-
-            size: Size.fromWidth(MediaQuery.of(context).size.width),
-            // padding: widget.horizontalView
-            //     ? const EdgeInsets.symmetric(horizontal: 5)
-            //     : const EdgeInsets.symmetric(vertical: 5),
-            cover: ClipRRect(
-              borderRadius: const BorderRadius.horizontal(
-                  right: Radius.circular(10), left: Radius.circular(10)),
-              child: Image.network(
-                pages[index].url ?? "",
-                fit: BoxFit.cover,
-              ),
+        (index) => AnimatedBookWidget(
+          totalPages: pages.length,
+          thisPageIndex: index,
+          size: Size.fromWidth(MediaQuery.of(context).size.width * 0.5),
+          cover: ClipRRect(
+            borderRadius: const BorderRadius.horizontal(
+                right: Radius.circular(10), left: Radius.circular(10)),
+            child: Image.network(
+              pages[index].url ?? "",
+              fit: BoxFit.cover,
             ),
           ),
+          // onAnimationFinished: (status) {
+          //   final thisPage = pages[index];
+          //   var originalIndex = pages.indexOf(thisPage);
+          //
+          //   if (kDebugMode) {
+          //     print("original index : $originalIndex");
+          //   }
+          //   switch (status) {
+          //     case AnimatedBookStatus.dismissed: //1 for page close logic
+          //       allPages = pages.toList();
+          //
+          //       final openedPages = pages
+          //           .sublist(
+          //             originalIndex,
+          //             pages.length,
+          //           )
+          //           .reversed
+          //           .toList();
+          //       final closedPages = pages.sublist(0, originalIndex).toList();
+          //       currentPages =
+          //           currentPages = [...closedPages, ...openedPages];
+          //       if (kDebugMode) {
+          //         print(
+          //             'closed on dismissed: ${closedPages.map((e) => currentPages.indexOf(e)).toList()}'
+          //             '\nopen on dismissed: ${openedPages.map((e) => currentPages.indexOf(e)).toList()}'
+          //             '\nfinal on dismissed: ${currentPages.map((e) => currentPages.indexOf(e)).toList()}');
+          //       }
+          //       setState(() {});
+          //       break;
+          //     case AnimatedBookStatus.completed: // for page open logic
+          //       currentPages = pages.toList();
+          //
+          //       final openedPages = pages
+          //           .sublist(
+          //             originalIndex,
+          //             pages.length,
+          //           )
+          //           .reversed
+          //           .toList();
+          //       final closedPages = pages.sublist(0, originalIndex).toList();
+          //       currentPages =
+          //           currentPages = [...closedPages, ...openedPages];
+          //       if (kDebugMode) {
+          //         print(
+          //             'closed on dismissed: ${closedPages.map((e) => currentPages.indexOf(e)).toList()}'
+          //             '\nopen on dismissed: ${openedPages.map((e) => currentPages.indexOf(e)).toList()}'
+          //             '\nfinal on dismissed: ${currentPages.map((e) => currentPages.indexOf(e)).toList()}');
+          //       }
+          //       if (_isFirstTap) {
+          //         _isFirstTap = false;
+          //       }
+          //       setState(() {});
+          //     case AnimatedBookStatus.animated:
+          //     default:
+          //       break;
+          //   }
+          // }
         ),
       );
 
@@ -101,13 +148,12 @@ class _MagazineExampleState extends State<MagazineExample>
           duration: const Duration(milliseconds: 100),
           reverseDuration: const Duration(milliseconds: 100),
         ),
-        AnimatedBookStatus.dismissed as AnimatedBookStatus?,
+        AnimatedBookStatus.dismissed,
         url,
       );
       allPages.add(item);
     }
     allPages = allPages.reversed.toList();
-    // currentPages = allPages.reversed.toList();
     currentPages = allPages.toList();
   }
 }

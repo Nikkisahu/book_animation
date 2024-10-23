@@ -14,3 +14,10 @@ class BookPageItem {
     this.url,
   );
 }
+// class BookPageItem {
+//   final AnimationController animationController;
+//   final AnimatedBookStatus bookStatus;
+//   final String? url;
+//
+//   BookPageItem(this.animationController, this.bookStatus, this.url);
+// }

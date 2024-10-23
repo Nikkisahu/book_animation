@@ -173,44 +173,14 @@
 import 'dart:developer';
 
 import 'package:book_animation/packages/book_widget/animated_book_widget.dart';
-import 'package:book_animation/packages/book_widget/src/widgets/background_blur.dart';
+import 'package:book_animation/packages/book_widget/src/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 /// A customizable animated book widget with
 /// cover, content, and animation control.
 ///
 class AnimatedBookWidget extends StatefulWidget {
-  /// Creates an [AnimatedBookWidget] with fixed content.
-  ///
-  /// The [cover] is the widget representing the book cover.
-  ///
-  /// The [size] is the size of the book.
-  ///
-  /// The [content] is the fixed content inside the book.
-  ///
-  /// The [padding] is the padding around the book.
-  ///
-  /// The [blurRadius] is the blur radius applied to the background.
-  ///
-  /// The [spreadRadius] is how far the shadow is spread.
-  ///
-  /// The [backgroundBlurOffset] is the offset of the background blur effect.
-  ///
-  /// The [backgroundColor] is the background color of the book.
-  ///
-  /// The [backgroundShadowColor] is the color of the shadow
-  /// applied to the background.
-  ///
-  /// The [curve] is the animation curve used for opening/closing the book.
-  ///
-  /// The [animationDuration] is the duration of the opening animation.
-  ///
-  /// The [reverseAnimationDuration] is the duration of the closing animation.
-  ///
-  /// The [backgroundBorderRadius] is the border radius
-  /// applied to the background.
-  ///
-  AnimatedBookWidget({
+  const AnimatedBookWidget({
     required this.cover,
     required this.size,
     super.key,
@@ -226,42 +196,12 @@ class AnimatedBookWidget extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 500),
     this.reverseAnimationDuration = const Duration(milliseconds: 500),
     this.backgroundBorderRadius = BorderRadius.zero,
+    required this.onAnimationFinished, // Add this line
   });
 
-  /// Creates an [AnimatedBookWidget] with dynamic content
-  /// using a builder function.
-  ///
-  /// The [cover] is the widget representing the book cover.
-  ///
-  /// The [size] is the size of the book.
-  ///
-  /// The [contentBuilder] is a function that builds
-  /// the dynamic content inside the book.
-  ///
-  /// The optional [contentChild] is used as a
-  /// fallback if [contentBuilder] is null.
-  ///
-  /// The [padding] is the padding around the book.
-  ///
-  /// The [blurRadius] is the blur radius applied to the background.
-  ///
-  /// The [spreadRadius] is how far the shadow is spread.
-  ///
-  /// The [backgroundBlurOffset] is the offset of the background blur effect.
-  ///
-  /// The [backgroundColor] is the background color of the book.
-  ///
-  /// The [backgroundShadowColor] is the color of the
-  /// shadow applied to the background.
-  ///
-  /// The [curve] is the animation curve used for opening/closing the book.
-  ///
-  /// The [animationDuration] is the duration of the opening animation.
-  ///
-  /// The [reverseAnimationDuration] is the duration of the closing animation.
-  ///
-  /// The [backgroundBorderRadius] is the border
-  /// radius applied to the background.
+  final Function(AnimatedBookStatus status)
+      onAnimationFinished; // Add this line
+
   const AnimatedBookWidget.builder({
     required this.cover,
     required this.size,
@@ -279,46 +219,21 @@ class AnimatedBookWidget extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 500),
     this.reverseAnimationDuration = const Duration(milliseconds: 500),
     this.backgroundBorderRadius = BorderRadius.zero,
+    required this.onAnimationFinished,
   });
 
-  /// The widget representing the book cover.
   final Widget cover;
-
-  /// The delegate responsible for building the animated content.
-
-  /// The size of the book.
   final Size size;
-
-  /// Padding applied to the book.
   final EdgeInsets padding;
-
-  /// The background color of the book.
   final Color? backgroundColor;
-
-  /// The color of the shadow applied to the background.
   final Color? backgroundShadowColor;
-
-  /// The blur radius applied to the background.
   final double blurRadius;
-
-  /// How far the shadow is spread.
   final double spreadRadius;
-
-  /// The offset of the background blur effect.
   final Offset backgroundBlurOffset;
-
-  /// The animation curve used for opening/closing the book.
   final Curve curve;
-
-  /// The duration of the opening animation.
   final Duration animationDuration;
-
-  /// The duration of the closing animation.
   final Duration reverseAnimationDuration;
-
-  /// The border radius applied to the background.
   final BorderRadius backgroundBorderRadius;
-
   final int totalPages;
   final int thisPageIndex;
 
@@ -353,52 +268,64 @@ class _AnimatedBookWidgetState extends State<AnimatedBookWidget>
   late BorderRadius backgroundBorderRadius = widget.backgroundBorderRadius;
 
   // void statusListener(AnimationStatus status) {
+  //   // Call your onAnimationFinished function with the mapped AnimatedBookStatus
+  //   // widget.onAnimationFinished(bookStatus);
   //   switch (status) {
   //     case AnimationStatus.dismissed:
   //       bookStatus = AnimatedBookStatus.dismissed;
+  //       log('bookStatus..dismissed: ${bookStatus}');
+  //
+  //       break;
   //     case AnimationStatus.completed:
   //       bookStatus = AnimatedBookStatus.completed;
+  //       log('bookStatus..completed: ${bookStatus}');
+  //       break;
   //     case AnimationStatus.forward:
+  //       print("return..forward");
   //     case AnimationStatus.reverse:
+  //       print("return..reverse");
   //       bookStatus = AnimatedBookStatus.animated;
+  //       break;
   //   }
   // }
 
+  // Adapter function to listen for AnimationStatus and convert it to AnimatedBookStatus
   void statusListener(AnimationStatus status) {
+    AnimatedBookStatus animatedBookStatus;
+
+    // Map AnimationStatus to AnimatedBookStatus
     switch (status) {
       case AnimationStatus.dismissed:
-        bookStatus = AnimatedBookStatus.dismissed;
+        animatedBookStatus = AnimatedBookStatus.dismissed;
         break;
       case AnimationStatus.completed:
-        // Only mark as completed if thisPageIndex matches the last page
-        if (widget.thisPageIndex == widget.totalPages - 1) {
-          bookStatus = AnimatedBookStatus.completed;
-          log('Animation completed on the last page: ${widget.thisPageIndex}');
-        }
+        animatedBookStatus = (widget.thisPageIndex == widget.totalPages - 1)
+            ? AnimatedBookStatus.completed
+            : AnimatedBookStatus.animated;
         break;
       case AnimationStatus.forward:
-        print("return..forward");
-
       case AnimationStatus.reverse:
-        print("return..reverse");
-        bookStatus = AnimatedBookStatus.animated;
+        animatedBookStatus = AnimatedBookStatus.animated;
         break;
     }
+
+    // Call the onAnimationFinished callback with the AnimatedBookStatus
+    widget.onAnimationFinished(animatedBookStatus);
   }
 
   void onPressed() {
     switch (bookStatus) {
       case AnimatedBookStatus.dismissed:
-        log("animationController..Forward");
-        log("widget..${widget.totalPages}");
-        log("widget.cover.${widget.cover}");
+        log("bookStatus..on..dismissed.${bookStatus}");
+
         animationController.forward(from: 0);
       case AnimatedBookStatus.completed:
-        log("animationController..completed");
-        log("widget..${widget.totalPages}");
-        log("widget.cover.${widget.cover}");
+        log("bookStatus..on..completed.${bookStatus}");
+
         animationController.reverse(from: 1);
       case AnimatedBookStatus.animated:
+        log("bookStatus..on..animated.${bookStatus}");
+
         break;
     }
   }
@@ -415,9 +342,6 @@ class _AnimatedBookWidgetState extends State<AnimatedBookWidget>
   void didUpdateWidget(AnimatedBookWidget oldWidget) {
     size = widget.size != size ? widget.size : size;
     cover = widget.cover != cover ? widget.cover : cover;
-    // contentDelegate = widget.contentDelegate != contentDelegate
-    //     ? widget.contentDelegate
-    //     : contentDelegate;
     padding = widget.padding != padding ? widget.padding : padding;
     backgroundColor = widget.backgroundColor != backgroundColor
         ? widget.backgroundColor ?? backgroundColor
@@ -463,22 +387,25 @@ class _AnimatedBookWidgetState extends State<AnimatedBookWidget>
           child: Stack(
             fit: StackFit.expand,
             children: [
-              BackgroundBlur(
-                backgroundColor: backgroundColor,
-                backgroundShadowColor: backgroundShadowColor,
-                blurRadius: blurRadius,
-                spreadRadius: spreadRadius,
-                offset: backgroundBlurOffset,
-                borderRadius: backgroundBorderRadius,
-              ),
-              // AnimatedContentWidget(
-              //   bookAnimation: animation,
-              //   delegate: contentDelegate,
+              // widget.thisPageIndex == widget.totalPages - 1
+              //     ?
+              // BackgroundBlur(
+              //   backgroundColor: backgroundColor,
+              //   backgroundShadowColor: backgroundShadowColor,
+              //   blurRadius: blurRadius,
+              //   spreadRadius: spreadRadius,
+              //   offset: backgroundBlurOffset,
+              //   borderRadius: backgroundBorderRadius,
               // ),
+              //     : SizedBox(),
               AnimatedCoverWidget(
                 listenable: animation,
                 cover: cover,
               ),
+              // AnimatedCoverWidget(
+              //   listenable: animation,
+              //   cover: cover,
+              // ),
             ],
           ),
         ),

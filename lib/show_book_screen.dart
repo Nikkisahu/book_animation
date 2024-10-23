@@ -17,9 +17,11 @@ class _MagazineExampleState extends State<MagazineExample>
   List<BookPageItem> allPages = [];
   List<BookPageItem> currentPages = [];
   List<String> urls = [
-    'https://content.wepik.com/statics/90897927/preview-page0.jpg',
+    'https://i.pinimg.com/originals/a1/f8/87/a1f88733921c820db477d054fe96afbb.jpg',
     'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg',
     'https://content.wepik.com/statics/90897927/preview-page0.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw51g1gMBrZN3FbN17flaY_YSYmTMGuudh3Q&s',
+    'https://marketplace.canva.com/EAFf0E5urqk/1/0/1003w/canva-blue-and-green-surreal-fiction-book-cover-53S3IzrNxvY.jpg'
   ];
   bool _isFirstTap = true;
 
@@ -69,75 +71,74 @@ class _MagazineExampleState extends State<MagazineExample>
   List<Widget> buildPagesList(List<BookPageItem> pages) => List.generate(
         pages.length,
         (index) => AnimatedBookWidget(
-          totalPages: pages.length,
-          thisPageIndex: index,
-          size: Size.fromWidth(MediaQuery.of(context).size.width * 0.5),
-          cover: ClipRRect(
-            borderRadius: const BorderRadius.horizontal(
-                right: Radius.circular(10), left: Radius.circular(10)),
-            child: Image.network(
-              pages[index].url ?? "",
-              fit: BoxFit.cover,
+            totalPages: pages.length,
+            thisPageIndex: index,
+            size: Size.fromWidth(MediaQuery.of(context).size.width * 0.5),
+            cover: ClipRRect(
+              borderRadius: const BorderRadius.horizontal(
+                  right: Radius.circular(10), left: Radius.circular(10)),
+              child: Image.network(
+                pages[index].url ?? "",
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          // onAnimationFinished: (status) {
-          //   final thisPage = pages[index];
-          //   var originalIndex = pages.indexOf(thisPage);
-          //
-          //   if (kDebugMode) {
-          //     print("original index : $originalIndex");
-          //   }
-          //   switch (status) {
-          //     case AnimatedBookStatus.dismissed: //1 for page close logic
-          //       allPages = pages.toList();
-          //
-          //       final openedPages = pages
-          //           .sublist(
-          //             originalIndex,
-          //             pages.length,
-          //           )
-          //           .reversed
-          //           .toList();
-          //       final closedPages = pages.sublist(0, originalIndex).toList();
-          //       currentPages =
-          //           currentPages = [...closedPages, ...openedPages];
-          //       if (kDebugMode) {
-          //         print(
-          //             'closed on dismissed: ${closedPages.map((e) => currentPages.indexOf(e)).toList()}'
-          //             '\nopen on dismissed: ${openedPages.map((e) => currentPages.indexOf(e)).toList()}'
-          //             '\nfinal on dismissed: ${currentPages.map((e) => currentPages.indexOf(e)).toList()}');
-          //       }
-          //       setState(() {});
-          //       break;
-          //     case AnimatedBookStatus.completed: // for page open logic
-          //       currentPages = pages.toList();
-          //
-          //       final openedPages = pages
-          //           .sublist(
-          //             originalIndex,
-          //             pages.length,
-          //           )
-          //           .reversed
-          //           .toList();
-          //       final closedPages = pages.sublist(0, originalIndex).toList();
-          //       currentPages =
-          //           currentPages = [...closedPages, ...openedPages];
-          //       if (kDebugMode) {
-          //         print(
-          //             'closed on dismissed: ${closedPages.map((e) => currentPages.indexOf(e)).toList()}'
-          //             '\nopen on dismissed: ${openedPages.map((e) => currentPages.indexOf(e)).toList()}'
-          //             '\nfinal on dismissed: ${currentPages.map((e) => currentPages.indexOf(e)).toList()}');
-          //       }
-          //       if (_isFirstTap) {
-          //         _isFirstTap = false;
-          //       }
-          //       setState(() {});
-          //     case AnimatedBookStatus.animated:
-          //     default:
-          //       break;
-          //   }
-          // }
-        ),
+            onAnimationFinished: (status) {
+              final thisPage = pages[index];
+              var originalIndex = pages.indexOf(thisPage);
+
+              if (kDebugMode) {
+                print("original index : $originalIndex");
+              }
+              switch (status) {
+                case AnimatedBookStatus.dismissed: //1 for page close logic
+                  allPages = pages.toList();
+
+                  final openedPages = pages
+                      .sublist(
+                        originalIndex,
+                        pages.length,
+                      )
+                      .reversed
+                      .toList();
+                  final closedPages = pages.sublist(0, originalIndex).toList();
+                  currentPages =
+                      currentPages = [...closedPages, ...openedPages];
+                  if (kDebugMode) {
+                    print(
+                        'closed on dismissed: ${closedPages.map((e) => currentPages.indexOf(e)).toList()}'
+                        '\nopen on dismissed: ${openedPages.map((e) => currentPages.indexOf(e)).toList()}'
+                        '\nfinal on dismissed: ${currentPages.map((e) => currentPages.indexOf(e)).toList()}');
+                  }
+                  setState(() {});
+                  break;
+                case AnimatedBookStatus.completed: // for page open logic
+                  currentPages = pages.toList();
+
+                  final openedPages = pages
+                      .sublist(
+                        originalIndex,
+                        pages.length,
+                      )
+                      .reversed
+                      .toList();
+                  final closedPages = pages.sublist(0, originalIndex).toList();
+                  currentPages =
+                      currentPages = [...closedPages, ...openedPages];
+                  if (kDebugMode) {
+                    print(
+                        'closed on completed: ${closedPages.map((e) => currentPages.indexOf(e)).toList()}'
+                        '\nopen on completed: ${openedPages.map((e) => currentPages.indexOf(e)).toList()}'
+                        '\nfinal on completed: ${currentPages.map((e) => currentPages.indexOf(e)).toList()}');
+                  }
+                  if (_isFirstTap) {
+                    _isFirstTap = false;
+                  }
+                  setState(() {});
+                case AnimatedBookStatus.animated:
+                default:
+                  break;
+              }
+            }),
       );
 
   void initializePages() {
